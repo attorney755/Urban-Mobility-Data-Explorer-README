@@ -15,27 +15,6 @@ A web dashboard for exploring NYC taxi trip data with filtering, charts, and map
 
 ---
 
-## **Project Structure**
-```
-nyc-taxi-dashboard/
-├── backend/
-│   ├── app.py                # Flask backend
-│   ├── requirements.txt      # Backend dependencies
-│   └── ...
-├── frontend/
-│   ├── index.html            # Frontend HTML
-│   ├── app.js                # Frontend JavaScript
-│   └── ...
-├── data/
-│   ├── raw/                  # Place `train.csv` here
-│   ├── processed/            # Place `cleaned_trips.csv` here
-│   └── links/                # Google Drive links for datasets
-├── scripts/
-│   └── data_cleaning.py      # Data cleaning script
-└── README.md                 # This file
-```
-
----
 
 ## **Setup Instructions**
 
