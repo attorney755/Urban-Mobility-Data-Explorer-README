@@ -60,6 +60,34 @@ pandas==2.0.3
 
 You can install packages globally, inside a virtual environment, or using conda. Below are OS-specific instructions for creating an environment and installing dependencies.
 
+#### Install pip (if missing)
+
+Most modern Python installations include `pip`. If `pip` is not available on your system, install it as follows:
+
+- Ubuntu / Debian:
+
+```bash
+sudo apt update
+sudo apt install python3-pip
+```
+
+- macOS:
+
+```bash
+python3 -m ensurepip --upgrade
+# or if using Homebrew-installed Python (recommended):
+brew install python
+```
+
+- Windows:
+
+```powershell
+python -m ensurepip --upgrade
+# or download and run get-pip.py from https://bootstrap.pypa.io/get-pip.py
+```
+
+After installing `pip`, you can continue with the virtual environment steps below.
+
 #### macOS / Linux (recommended: venv)
 
 1. Create and activate a virtual environment (Python 3.8+):
@@ -161,6 +189,19 @@ DB_PORT=3306
 ```
 
 If your `app.py` reads environment variables differently, update these names accordingly.
+
+### DB testing & development credentials
+
+For development and quick testing the backend currently uses a hard-coded connection in `backend/app.py`:
+
+```python
+host='localhost',
+user='team2',
+password='Alu@2025!',
+database='nyc_taxi'
+```
+
+These credentials were included to make initial local testing easier. For any deployment or shared repository you MUST remove hard-coded credentials and use environment variables (for example, the `.env` file described above) or a secrets manager. If you want, I can change `backend/app.py` to read those values from environment variables and add a short `backend/.env.example` file.
 
 ---
 
