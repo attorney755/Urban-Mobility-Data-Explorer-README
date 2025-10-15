@@ -1,6 +1,4 @@
-Here’s the **complete, ready-to-copy README.md** for your project, including all setup instructions, project structure, environment setup, and team member names:
 
----
 
 ```markdown
 # NYC Taxi Trips Dashboard
@@ -178,5 +176,3 @@ This project is licensed under the MIT License.
   gunicorn==20.1.0
   pandas==2.0.3
   ```
-
-This README is fully runnable and includes all the necessary instructions for setting up and running your project on **Windows, macOS, and Ubuntu Linux**. It also includes the team member names and clear instructions for downloading the datasets.
