@@ -1,23 +1,18 @@
-Here's a more structured and visually appealing version of the README for GitHub, with a cleaner layout and some formatting improvements. I've also added some headers and bullet points to enhance readability.
+# NYC Taxi Trips Dashboard (Urban Mobility Data Explorer)
+
+A web dashboard for exploring taxi trip data with interactive filtering, charts, and maps.
+
+## Team Members
+- Samuel NIYONKURU
+- David NGARAMBE
+- Attorney Valois NIYIGABA
+- Prudence Browns
 
 ---
 
-```markdown
-# NYC Taxi Trips Dashboard
+## Project Structure
 
-A web dashboard for exploring NYC taxi trip data with interactive filtering, charts, and maps.
-
-## **Team Members**
-- **Samuel NIYONKURU**
-- **David NGARAMBE**
-- **Attorney Valois NIYIGABA**
-- **Prudence Browns**
-
----
-
-## **Project Structure**
 ```
-
 nyc-taxi-dashboard/
 ├── backend/
 │   ├── app.py                # Flask backend
@@ -34,213 +29,192 @@ nyc-taxi-dashboard/
 ├── scripts/
 │   └── data_cleaning.py      # Data cleaning script
 └── README.md                 # This file
-
-````
-
----
-
-## **Setup Instructions**
-
-### **1. Download the Dataset**
-The dataset files are hosted on Google Drive due to their large size. Download them and place them in the correct directories:
-
-- **Train Dataset**: [Download `train.csv`](your-google-drive-link-for-train.csv)  
-  - **Location**: `./data/raw/train.csv`
-  
-- **Cleaned Dataset**: [Download `cleaned_trips.csv`](your-google-drive-link-for-cleaned_trips.csv)  
-  - **Location**: `./data/processed/cleaned_trips.csv`
+```
 
 ---
 
-### **2. Install Dependencies**
+## Setup Instructions
 
-#### **Backend and Script Dependencies**
-The backend and scripts require Python 3.8+ and the following packages. Install them using `pip`:
+Follow these steps to get the project running locally. The backend requires Python 3.8+.
+
+### 1) Download the dataset
+
+The dataset files are large and are hosted on Google Drive. Download and place them in the following locations:
+
+- Train dataset: `./data/raw/train.csv`  (replace with your Google Drive link)
+- Cleaned dataset: `./data/processed/cleaned_trips.csv`  (replace with your Google Drive link)
+
+---
+
+### 2) Install Python and packages
+
+The backend and scripts use the dependencies listed in `backend/requirements.txt`:
+
+```
+flask==2.3.2
+flask-cors==3.0.10
+mysql-connector-python==8.0.33
+gunicorn==20.1.0
+pandas==2.0.3
+```
+
+You can install packages globally, inside a virtual environment, or using conda. Below are OS-specific instructions for creating an environment and installing dependencies.
+
+#### macOS / Linux (recommended: venv)
+
+1. Create and activate a virtual environment (Python 3.8+):
 
 ```bash
-pip install flask flask-cors mysql-connector-python gunicorn pandas
-````
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-Alternatively, you can install all dependencies at once by running:
+2. Install backend packages:
 
 ```bash
 cd backend
 pip install -r requirements.txt
 ```
 
-#### **Frontend Dependencies**
+Notes:
+- If `pip` points to Python 2 on your system, use `pip3`.
+- On macOS you may need to install Xcode command-line tools for compiling some packages: `xcode-select --install`.
 
-The frontend is powered by modern JavaScript libraries loaded via CDN in `index.html`. No installation is required for the frontend. The libraries include:
+#### Windows (recommended: venv)
 
-* **Chart.js**
-* **Leaflet.js**
-* **Papa Parse**
+1. Create and activate a virtual environment (PowerShell example):
 
----
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-### **3. Set Up the Database**
+2. Install backend packages:
 
-This project uses MySQL. Follow the instructions below depending on your operating system:
+```powershell
+cd backend
+pip install -r requirements.txt
+```
 
-#### **Windows**
-
-1. **Install MySQL**:
-
-   * Download MySQL from [mysql.com](https://dev.mysql.com/downloads/installer/).
-   * Follow the installation instructions.
-
-2. **Create a Database**:
-
-   * Open MySQL Command Line Client or MySQL Workbench.
-   * Run the following commands:
-
-     ```sql
-     CREATE DATABASE nyc_taxi;
-     USE nyc_taxi;
-     ```
-   * Import the database schema or run the `scripts/db_setup.py` script to create the tables and insert data.
-
-#### **macOS**
-
-1. **Install MySQL**:
-
-   * Use Homebrew to install MySQL:
-
-     ```bash
-     brew install mysql
-     brew services start mysql
-     ```
-
-2. **Create a Database**:
-
-   * Open terminal and run:
-
-     ```bash
-     mysql -u root -p
-     ```
-   * Enter your MySQL password and run:
-
-     ```sql
-     CREATE DATABASE nyc_taxi;
-     USE nyc_taxi;
-     ```
-   * Import the database schema or run the `scripts/db_setup.py` script.
-
-#### **Ubuntu Linux**
-
-1. **Install MySQL**:
-
-   * Update your package list and install MySQL:
-
-     ```bash
-     sudo apt update
-     sudo apt install mysql-server
-     sudo systemctl start mysql
-     ```
-
-2. **Create a Database**:
-
-   * Open terminal and run:
-
-     ```bash
-     sudo mysql -u root -p
-     ```
-   * Enter your MySQL password and run:
-
-     ```sql
-     CREATE DATABASE nyc_taxi;
-     USE nyc_taxi;
-     ```
-   * Import the database schema or run the `scripts/db_setup.py` script.
+If you use Command Prompt instead of PowerShell, activate the venv with `.\.venv\Scripts\activate`.
 
 ---
 
-### **4. Configure Environment Variables**
+### 3) Install and configure MySQL (mysql-connector-python explained)
 
-Create a `.env` file in the `backend/` directory with your MySQL connection details:
+The project uses MySQL. Below are installation steps for common OSes, plus notes about the Python driver `mysql-connector-python` (already included in `requirements.txt`).
+
+#### Why `mysql-connector-python`?
+
+`mysql-connector-python` is Oracle's official pure-Python MySQL driver. It's easy to install via pip and does not require compiling native C extensions.
+
+#### Ubuntu / Debian
+
+```bash
+sudo apt update
+sudo apt install mysql-server
+sudo systemctl start mysql
+sudo mysql_secure_installation
+```
+
+Then create the database and a user (interactive or run these SQL commands):
+
+```sql
+CREATE DATABASE nyc_taxi;
+CREATE USER 'nyc_user'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON nyc_taxi.* TO 'nyc_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+Connect from Python using the credentials above. Example (in `backend/app.py` or scripts) will use environment variables.
+
+#### macOS (Homebrew)
+
+```bash
+brew install mysql
+brew services start mysql
+mysql_secure_installation
+```
+
+Then create the database and user as shown in the Ubuntu section.
+
+#### Windows
+
+1. Download and install MySQL from: https://dev.mysql.com/downloads/installer/
+2. Run MySQL Installer and configure a root password.
+3. Open MySQL Shell or Workbench and run the same `CREATE DATABASE` and `CREATE USER` commands as above.
+
+Note: After installing MySQL, `mysql-connector-python` can be installed in your Python environment with `pip install mysql-connector-python` (already covered when installing `requirements.txt`). No extra OS-level dependencies are required for this driver.
+
+---
+
+### 4) Configure environment variables
+
+Create a `.env` file inside `backend/` with your database connection details (or export these variables in your shell):
 
 ```
 DB_HOST=localhost
-DB_USER=your-mysql-username
-DB_PASSWORD=your-mysql-password
+DB_USER=nyc_user
+DB_PASSWORD=your_password
 DB_NAME=nyc_taxi
+DB_PORT=3306
 ```
+
+If your `app.py` reads environment variables differently, update these names accordingly.
 
 ---
 
-### **5. Run the Backend**
+### 5) Run the backend
 
-Navigate to the `backend/` directory and start the Flask server:
+Start the Flask backend locally:
 
 ```bash
 cd backend
+# activate venv if not already active
 python app.py
 ```
 
-The backend will be available at `http://localhost:5000`.
+The API should be available at `http://localhost:5000` by default.
+
+For production you can run with Gunicorn (installed via `requirements.txt`):
+
+```bash
+gunicorn --bind 0.0.0.0:8000 app:app
+```
 
 ---
 
-### **6. Run the Frontend**
+### 6) Run the frontend
 
-For best performance, serve the frontend using a local server. You can do this with Python's built-in server:
+The frontend lives in `frontend/`. For local development, serve files with Python's simple server:
 
 ```bash
 cd frontend
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000` in your browser.
+Open `http://localhost:8000` in your browser.
+
+If your frontend uses a build tool (e.g., npm / webpack), follow that tool's steps instead.
 
 ---
 
-### **7. Video Walkthrough**
+## Troubleshooting
 
-Watch the video walkthrough to see the dashboard in action:
-[Video Walkthrough](your-video-link)
-
----
-
-## **Troubleshooting**
-
-* **MySQL Connection Issues**: Ensure MySQL is running and the credentials in `.env` are correct.
-* **Frontend Not Loading**: Make sure you're serving the frontend using a local server, e.g., `python -m http.server 8000`.
-* **Missing Data**: Ensure the dataset files are downloaded and placed in the correct directories.
+- MySQL connection errors: ensure MySQL is running and the credentials in `.env` match the user and password you created. Use `sudo systemctl status mysql` (Linux) or check Homebrew services (macOS).
+- `mysql-connector-python` install issues: this driver is pure Python and should install via pip. If you see SSL or connection issues, check your MySQL server configuration to ensure it allows local TCP connections and the user has proper grants.
+- Pandas memory issues: large CSVs can require a lot of RAM. Consider sampling or using chunked reading with `pandas.read_csv(..., chunksize=...)`.
 
 ---
 
-## **License**
+## License
 
 This project is licensed under the MIT License.
 
 ---
 
-### **Additional Notes:**
+## Notes & Next Steps
 
-* Replace the placeholder links for `train.csv`, `cleaned_trips.csv`, and `your-video-link` with the actual Google Drive and video URLs.
-* Ensure the `requirements.txt` in the `backend/` directory contains the correct package versions:
+- Replace placeholder dataset and video links with actual URLs.
+- If you want, I can also add a short `backend/README.md` with example `.env` values and a sample curl request to test the API.
 
-  ```plaintext
-  flask==2.3.2
-  flask-cors==3.0.10
-  mysql-connector-python==8.0.33
-  gunicorn==20.1.0
-  pandas==2.0.3
-  ```
-
----
-
-This README should provide a clear, user-friendly guide to setting up and running the project on Windows, macOS, and Ubuntu Linux. It includes all necessary steps, such as downloading datasets, installing dependencies, setting up MySQL, and running both the frontend and backend servers.
-
-```
-
----
-
-### **Key Improvements:**
-
-- **Formatting**: Added headers and organized steps into clear sections.
-- **Code blocks**: Properly formatted code snippets for easy copy-pasting.
-- **Clear instructions**: Added more concise language and emphasized key steps with bold text for better readability.
-
-You can now copy this and paste it directly into your GitHub repository!
-```
