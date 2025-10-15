@@ -41,8 +41,8 @@ Follow these steps to get the project running locally. The backend requires Pyth
 
 The dataset files are large and are hosted on Google Drive. Download and place them in the following locations:
 
-- Train dataset: `./data/raw/train.csv`  (replace with your Google Drive link)
-- Cleaned dataset: `./data/processed/cleaned_trips.csv`  (replace with your Google Drive link)
+- Train dataset: `./data/raw/train.csv`  (https://drive.google.com/file/d/1hIwlem1l4fNdSJCi1MiM9QJv3SSWZGJe/view?usp=drive_link)
+- Cleaned dataset: `./data/processed/cleaned_trips.csv`  (https://drive.google.com/file/d/17t7OYgXkZPPhE6-x1uHWkh8bqRphL6O1/view?usp=sharing)
 
 ---
 
