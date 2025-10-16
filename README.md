@@ -190,10 +190,8 @@ gunicorn --bind 0.0.0.0:8000 app:app
 ### 7) Run the Frontend
 The frontend lives in `frontend/`.
 ```
-```
 Open `http://localhost:8000` in your browser.
-
----
+```
 
 ## Troubleshooting
 - **MySQL connection errors**: Ensure MySQL is running and the credentials in `.env` match the user and password you created.
