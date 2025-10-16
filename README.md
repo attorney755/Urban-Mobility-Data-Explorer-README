@@ -1,4 +1,4 @@
-Here’s how you can update your **README.md** to include the instructions for importing the database, running the data cleaning scripts, and integrating the new steps seamlessly:
+Here’s your updated **README.md** with the database import instructions integrated, and the data cleaning steps removed as requested:
 
 ---
 
@@ -33,8 +33,7 @@ nyc-taxi-dashboard/
 │   ├── schema.sql            # Database schema
 │   └── data_dump.sql         # Database data dump
 ├── scripts/
-│   ├── clean_cleaning.py     # Initial data cleaning script
-│   └── update_cleaned_data.py # Collects column issues for DB insertion
+│   └── data_cleaning.py      # Data cleaning script
 └── README.md                 # This file
 ```
 
@@ -43,30 +42,81 @@ nyc-taxi-dashboard/
 ## Setup Instructions
 
 ### 1) Download the Dataset
-Download the dataset files and place them in the following locations:
+The dataset files are large and are hosted on Google Drive. Download and place them in the following locations:
 - **Train dataset**: [`train.csv`](https://drive.google.com/file/d/1hIwlem1l4fNdSJCi1MiM9QJv3SSWZGJe/view?usp=drive_link) → `./data/raw/train.csv`
 - **Cleaned dataset**: [`cleaned_trips.csv`](https://drive.google.com/file/d/17t7OYgXkZPPhE6-x1uHWkh8bqRphL6O1/view?usp=sharing) → `./data/processed/cleaned_trips.csv`
 
 ---
 
-### 2) Clean and Prepare the Data
-Before importing the data into MySQL, you must clean and validate it:
-1. Run the initial cleaning script:
-   ```bash
-   python scripts/clean_cleaning.py
-   ```
-   This script processes the raw data and generates a cleaned version in `./data/processed/cleaned_trips.csv`.
+### 2) Install Python and Packages
+The backend and scripts use the dependencies listed in `backend/requirements.txt`:
+```
+flask==2.3.2
+flask-cors==3.0.10
+mysql-connector-python==8.0.33
+gunicorn==20.1.0
+pandas==2.0.3
+```
+You can install packages globally, inside a virtual environment, or using conda. Below are OS-specific instructions for creating an environment and installing dependencies.
 
-2. Run the column validation script:
+#### Install pip (if missing)
+Most modern Python installations include `pip`. If `pip` is not available on your system, install it as follows:
+- **Ubuntu / Debian**:
+  ```bash
+  sudo apt update
+  sudo apt install python3-pip
+  ```
+- **macOS**:
+  ```bash
+  python3 -m ensurepip --upgrade
+  # or if using Homebrew-installed Python (recommended):
+  brew install python
+  ```
+- **Windows**:
+  ```powershell
+  python -m ensurepip --upgrade
+  # or download and run get-pip.py from https://bootstrap.pypa.io/get-pip.py
+  ```
+
+After installing `pip`, you can continue with the virtual environment steps below.
+
+#### macOS / Linux (recommended: venv)
+1. Create and activate a virtual environment (Python 3.8+):
    ```bash
-   python scripts/update_cleaned_data.py
+   python3 -m venv .venv
+   source .venv/bin/activate
    ```
-   This script checks for column issues that may arise during database insertion and logs them for review.
+2. Install backend packages:
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   ```
+   **Notes**:
+   - If `pip` points to Python 2 on your system, use `pip3`.
+   - On macOS, you may need to install Xcode command-line tools: `xcode-select --install`.
+
+#### Windows (recommended: venv)
+1. Create and activate a virtual environment (PowerShell example):
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+2. Install backend packages:
+   ```powershell
+   cd backend
+   pip install -r requirements.txt
+   ```
+   If you use Command Prompt instead of PowerShell, activate the venv with `.\.venv\Scripts\activate`.
 
 ---
 
-### 3) Import the Database
-After cleaning the data, import the schema and data into MySQL:
+### 3) Install and Configure MySQL
+The project uses MySQL. Install MySQL for your operating system and ensure it is running.
+
+---
+
+### 4) Import the Database
+After installing MySQL, import the provided schema and data:
 
 1. **Create the database**:
    ```bash
@@ -85,17 +135,7 @@ After cleaning the data, import the schema and data into MySQL:
 
 ---
 
-### 4) Install Python and Packages
-Follow the [Python and package installation instructions](#2-install-python-and-packages) as described in the previous README.
-
----
-
-### 5) Install and Configure MySQL
-Follow the [MySQL installation and configuration instructions](#3-install-and-configure-mysql) as described in the previous README.
-
----
-
-### 6) Configure Environment Variables
+### 5) Configure Environment Variables
 Create a `.env` file inside `backend/` with your database connection details:
 ```
 DB_HOST=localhost
@@ -107,15 +147,34 @@ DB_PORT=3306
 
 ---
 
-### 7) Run the Backend and Frontend
-Follow the [backend](#5-run-the-backend) and [frontend](#6-run-the-frontend) instructions as described in the previous README.
+### 6) Run the Backend
+Start the Flask backend locally:
+```bash
+cd backend
+# activate venv if not already active
+python app.py
+```
+The API should be available at `http://localhost:5000` by default. For production, you can run with Gunicorn:
+```bash
+gunicorn --bind 0.0.0.0:8000 app:app
+```
+
+---
+
+### 7) Run the Frontend
+The frontend lives in `frontend/`. For local development, serve files with Python's simple server:
+```bash
+cd frontend
+python -m http.server 8000
+```
+Open `http://localhost:8000` in your browser.
 
 ---
 
 ## Troubleshooting
-- **Data cleaning issues**: Ensure all scripts in `scripts/` are executable and dependencies are installed.
-- **MySQL import errors**: Verify that the database and user exist, and that the schema and data files are correctly formatted.
-- **Connection errors**: Double-check your `.env` file and MySQL user permissions.
+- **MySQL connection errors**: Ensure MySQL is running and the credentials in `.env` match the user and password you created.
+- **`mysql-connector-python` install issues**: This driver is pure Python and should install via pip. If you see SSL or connection issues, check your MySQL server configuration.
+- **Pandas memory issues**: Large CSVs can require a lot of RAM. Consider sampling or using chunked reading with `pandas.read_csv(..., chunksize=...)`.
 
 ---
 
