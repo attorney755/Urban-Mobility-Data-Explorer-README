@@ -126,8 +126,8 @@ sudo mysql_secure_installation
 Then create the database and a user (interactive or run these SQL commands):
 ```sql
 CREATE DATABASE nyc_taxi;
-CREATE USER 'nyc_user'@'localhost' IDENTIFIED BY 'your_password';
-GRANT ALL PRIVILEGES ON nyc_taxi.* TO 'nyc_user'@'localhost';
+CREATE USER 'team2'@'localhost' IDENTIFIED BY 'Alu@2025!';
+GRANT ALL PRIVILEGES ON ncy_taxi.* TO 'team2'@'%';
 FLUSH PRIVILEGES;
 ```
 
@@ -151,12 +151,12 @@ After creating the database and user, import the schema and data:
 
 1. **Import the schema**:
    ```bash
-   mysql -u nyc_user -p nyc_taxi < data/schema.sql
+   mysql -u team2 -p nyc_taxi < data/schema.sql
    ```
 
 2. **Import the data**:
    ```bash
-   mysql -u nyc_user -p nyc_taxi < data/data_dump.sql
+   mysql -u team2 -p nyc_taxi < data/data_dump.sql
    ```
 
 ---
@@ -165,8 +165,8 @@ After creating the database and user, import the schema and data:
 Create a `.env` file inside `backend/` with your database connection details:
 ```
 DB_HOST=localhost
-DB_USER=nyc_user
-DB_PASSWORD=your_password
+DB_USER=team2
+DB_PASSWORD=Alu@2025!
 DB_NAME=nyc_taxi
 DB_PORT=3306
 ```
