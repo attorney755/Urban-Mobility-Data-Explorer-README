@@ -1,4 +1,4 @@
-Here’s your updated **README.md** with the database import instructions integrated, and the data cleaning steps removed as requested:
+Here’s the updated **README.md** with the full MySQL installation and configuration instructions for all OSes, followed by the database import steps:
 
 ---
 
@@ -111,26 +111,52 @@ After installing `pip`, you can continue with the virtual environment steps belo
 ---
 
 ### 3) Install and Configure MySQL
-The project uses MySQL. Install MySQL for your operating system and ensure it is running.
+The project uses MySQL. Below are installation steps for common OSes, plus notes about the Python driver `mysql-connector-python` (already included in `requirements.txt`).
+
+#### Why `mysql-connector-python`?
+`mysql-connector-python` is Oracle's official pure-Python MySQL driver. It's easy to install via pip and does not require compiling native C extensions.
+
+#### Ubuntu / Debian
+```bash
+sudo apt update
+sudo apt install mysql-server
+sudo systemctl start mysql
+sudo mysql_secure_installation
+```
+Then create the database and a user (interactive or run these SQL commands):
+```sql
+CREATE DATABASE nyc_taxi;
+CREATE USER 'nyc_user'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON nyc_taxi.* TO 'nyc_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+#### macOS (Homebrew)
+```bash
+brew install mysql
+brew services start mysql
+mysql_secure_installation
+```
+Then create the database and user as shown in the Ubuntu section.
+
+#### Windows
+1. Download and install MySQL from: [MySQL Installer](https://dev.mysql.com/downloads/installer/)
+2. Run MySQL Installer and configure a root password.
+3. Open MySQL Shell or Workbench and run the same `CREATE DATABASE` and `CREATE USER` commands as above.
 
 ---
 
 ### 4) Import the Database
-After installing MySQL, import the provided schema and data:
+After creating the database and user, import the schema and data:
 
-1. **Create the database**:
+1. **Import the schema**:
    ```bash
-   mysql -u your_username -p -e "CREATE DATABASE nyc_taxi;"
+   mysql -u nyc_user -p nyc_taxi < data/schema.sql
    ```
 
-2. **Import the schema**:
+2. **Import the data**:
    ```bash
-   mysql -u your_username -p nyc_taxi < data/schema.sql
-   ```
-
-3. **Import the data**:
-   ```bash
-   mysql -u your_username -p nyc_taxi < data/data_dump.sql
+   mysql -u nyc_user -p nyc_taxi < data/data_dump.sql
    ```
 
 ---
